@@ -470,6 +470,45 @@ $("manualValidate").onclick = async ()=>{
   validateCodes();
 };
 </script>
+<a
+  href="https://github.com/ryphaalar-lang/ValidadorUbicacion"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="project-info"
+  title="Acerca del proyecto"
+>
+  ⓘ Acerca del proyecto
+</a>
 
+<style>
+  .project-info {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 9999;
+    padding: 9px 13px;
+    border-radius: 999px;
+    background: rgba(20, 24, 32, 0.92);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(6px);
+  }
+
+  .project-info:hover {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    .project-info {
+      right: 10px;
+      bottom: 10px;
+      padding: 8px 11px;
+      font-size: 12px;
+    }
+  }
+</style>
 </body>
 </html>
