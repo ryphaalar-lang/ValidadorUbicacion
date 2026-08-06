@@ -200,6 +200,7 @@ let scanMode = "";
 let scanner = null;
 let scanning = false;
 let validationFinished = false;
+let nextScanTimer = null;
 
 const $ = id => document.getElementById(id);
 
@@ -229,22 +230,33 @@ function showValue(element, value){
   element.classList.remove("placeholder");
 }
 
+function recrearReader(){
+
+  const readerAnterior = $("reader");
+
+  const readerNuevo = document.createElement("div");
+  readerNuevo.id = "reader";
+  readerNuevo.style.display = "none";
+
+  readerAnterior.replaceWith(readerNuevo);
+
+  return readerNuevo;
+}
+  
 async function startScan(mode){
 
   if(await _q7()) return;
+  if(validationFinished) return;
 
   scanMode = mode;
 
-  if(scanning){
+  if(scanning || scanner){
     await stopScanner();
   }
 
-  const reader = $("reader");
+  const reader = recrearReader();
 
-  reader.innerHTML = "";
   reader.style.display = "block";
-  reader.style.height = "auto";
-  reader.style.minHeight = "0";
 
   scanner = new Html5Qrcode("reader");
   scanning = true;
@@ -267,9 +279,10 @@ async function startScan(mode){
     );
   }
   catch(error){
+
     scanning = false;
-    reader.innerHTML = "";
-    reader.style.display = "none";
+    scanner = null;
+    recrearReader();
 
     alert(
       "No fue posible abrir la cámara. " +
@@ -278,12 +291,18 @@ async function startScan(mode){
   }
 }
 
-  
-async function stopScanner(){
+  async function stopScanner(){
 
-  if(scanner && scanning){
+  if(scanner){
+
     try{
-      await scanner.stop();
+      if(scanning){
+        await scanner.stop();
+      }
+    }
+    catch(error){}
+
+    try{
       await scanner.clear();
     }
     catch(error){}
@@ -292,12 +311,7 @@ async function stopScanner(){
   scanner = null;
   scanning = false;
 
-  const reader = $("reader");
-
-  reader.innerHTML = "";
-  reader.style.display = "none";
-  reader.style.height = "";
-  reader.style.minHeight = "";
+  recrearReader();
 }
 
   async function onScanSuccess(text){
@@ -321,7 +335,12 @@ async function stopScanner(){
     }
     else{
       $("stepActual").className = "step active";
-      setTimeout(()=>startScan("actual"),1000);
+     nextScanTimer = setTimeout(()=>{
+
+  nextScanTimer = null;
+  startScan("actual");
+
+},1000);
     }
   }
   else{
@@ -335,7 +354,12 @@ async function stopScanner(){
     }
     else{
       $("stepExpected").className = "step active";
-      setTimeout(()=>startScan("expected"),1000);
+      nextScanTimer = setTimeout(()=>{
+
+  nextScanTimer = null;
+  startScan("actual");
+
+},1000);
     }
   }
 }
