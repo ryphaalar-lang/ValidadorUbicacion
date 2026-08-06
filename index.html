@@ -239,9 +239,16 @@ async function startScan(mode){
     await stopScanner();
   }
 
-  $("reader").style.display = "block";
-  scanner = new Html5Qrcode("reader");
-  scanning = true;
+const reader = $("reader");
+
+reader.innerHTML = "";
+reader.style.display = "block";
+reader.style.height = "auto";
+reader.style.minHeight = "0";
+
+scanner = new Html5Qrcode("reader");
+  
+scanning = true;
 
   try{
     await scanner.start(
@@ -279,10 +286,16 @@ async function stopScanner(){
 
   scanner = null;
   scanning = false;
-  $("reader").style.display = "none";
+
+  const reader = $("reader");
+
+  reader.innerHTML = "";
+  reader.style.display = "none";
+  reader.style.height = "";
+  reader.style.minHeight = "";
 }
 
-async function onScanSuccess(text){
+  async function onScanSuccess(text){
 
   if(validationFinished) return;
   
