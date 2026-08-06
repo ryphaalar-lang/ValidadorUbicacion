@@ -239,16 +239,15 @@ async function startScan(mode){
     await stopScanner();
   }
 
-const reader = $("reader");
+  const reader = $("reader");
 
-reader.innerHTML = "";
-reader.style.display = "block";
-reader.style.height = "auto";
-reader.style.minHeight = "0";
+  reader.innerHTML = "";
+  reader.style.display = "block";
+  reader.style.height = "auto";
+  reader.style.minHeight = "0";
 
-scanner = new Html5Qrcode("reader");
-  
-scanning = true;
+  scanner = new Html5Qrcode("reader");
+  scanning = true;
 
   try{
     await scanner.start(
@@ -269,11 +268,17 @@ scanning = true;
   }
   catch(error){
     scanning = false;
-    $("reader").style.display = "none";
-    alert("No fue posible abrir la cámara. Revisa el permiso de cámara y abre la aplicación desde una dirección HTTPS.");
+    reader.innerHTML = "";
+    reader.style.display = "none";
+
+    alert(
+      "No fue posible abrir la cámara. " +
+      "Revisa el permiso de cámara y abre la aplicación desde una dirección HTTPS."
+    );
   }
 }
 
+  
 async function stopScanner(){
 
   if(scanner && scanning){
