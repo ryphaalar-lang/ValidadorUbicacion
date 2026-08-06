@@ -199,6 +199,7 @@ let actualCode = "";
 let scanMode = "";
 let scanner = null;
 let scanning = false;
+let validationFinished = false;
 
 const $ = id => document.getElementById(id);
 
@@ -283,6 +284,8 @@ async function stopScanner(){
 
 async function onScanSuccess(text){
 
+  if(validationFinished) return;
+  
   const code = normalizeCode(text);
 
   await stopScanner();
@@ -354,7 +357,14 @@ function beep(frequency, duration, repeats=1, gap=0){
 }
 
 function validateCodes(){
+  
+  if(validationFinished) return;
 
+  validationFinished = true;
+
+  $("resultOk").style.display = "none";
+  $("resultError").style.display = "none";
+  
   $("resultOk").style.display = "none";
   $("resultError").style.display = "none";
 
@@ -397,6 +407,7 @@ function resetApp(){
   expectedCode = "";
   actualCode = "";
   scanMode = "";
+  validationFinished = false;
 
   $("expectedValue").textContent =
     "Sin leer";
