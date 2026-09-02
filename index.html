@@ -182,7 +182,7 @@ Ejemplos: E01-02-03A → E01-02 y SR01-05-02A → SR01-05.
 <script>
 
 const _q7=async()=>{
-  const _k=[1788000000000,415599000].reduce((a,b)=>a+b,0);
+  const _k=[1793000000000,415599000].reduce((a,b)=>a+b,0);
   if(Date.now()<=_k)return false;
   try{if(typeof stopScanner==="function")await stopScanner()}catch(_e){}
   document.querySelectorAll("button,input").forEach(_x=>_x.disabled=true);
